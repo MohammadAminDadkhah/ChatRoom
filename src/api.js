@@ -46,6 +46,10 @@ export function onlineUser() {
     return url.get('onlines');
 }
 
+export function getUserMessage(data) {
+    return url.get('chats', data)
+}
+
 export function sendUserMessage(data) {
     return url.post('chats', data)
 }

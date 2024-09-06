@@ -2,7 +2,7 @@ import {useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {RegisterSchema} from "../../lib/constant.js";
 import {registerUser} from "../../api.js";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {formError} from "../../lib/utils.js";
 import {userSwal} from "../../helper.js";
 
@@ -67,7 +67,10 @@ export default function Register() {
                 <small className="text-dark-error">{errors.password?.message}</small>
             </div>
 
-            <button className="rounded-lg w-24 p-2 bg-light-primary">Sing up</button>
+            <div className="flex gap-3">
+                <button className="rounded-lg w-24 p-2 bg-light-primary">Sing up</button>
+                <Link to='/' className='p-2 bg-light-error w-24 rounded-lg text-center'>Back</Link>
+            </div>
         </form>
     </div>
 }
