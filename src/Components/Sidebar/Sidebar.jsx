@@ -1,20 +1,39 @@
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {onlineUser} from "../../api.js";
+import {getUserDetail, onlineUser} from "../../api.js";
 
 export default function Sidebar() {
-    const { userId } = useParams();
     const [users, setUsers] = useState([]);
+    const [userId, setUserId] = useState(null);
 
     const getOnlineUser = () => {
         onlineUser()
-            .then(res => setUsers(res.data.filter(x => x.id === userId)))
+            .then(res => setUsers(res.data.filter(user => user.id !== userId)))
             .catch(res => {});
     }
 
+    const userDetails = () => {
+        getUserDetail()
+            .then(res => setUserId(res.data.id))
+    };
+
     useEffect(() => {
+        const timer = checkOnlineUser();
+        userDetails();
         getOnlineUser();
+
+        return () => {
+            clearTimeout(timer);
+        }
     }, []);
+
+    const checkOnlineUser = () => {
+        return  setInterval(() => {
+            getOnlineUser();
+            clearInterval(interval);
+        }, 30000);
+    }
+
     return (
         <div className="container basis-1/5">
             <h1>
@@ -23,7 +42,7 @@ export default function Sidebar() {
             </h1>
 
             <ul className="mt-1">
-                {users.length !== 0 ? users.map((user) => <li key={user.id}>{user.name}</li>) : <p className="text-gray-500">No one is online...</p>}
+                {users.length !== 0 ? users.map((user) => <li key={user.id}>{user.id !== userId ? user.name : null}</li>) : <p className="text-gray-500">No one is online...</p>}
             </ul>
         </div>
     );

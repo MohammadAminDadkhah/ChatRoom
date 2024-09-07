@@ -53,3 +53,7 @@ export function getUserMessage(data) {
 export function sendUserMessage(data) {
     return url.post('chats', data)
 }
+
+export function getUserDetail() {
+    return url.get('user')
+}

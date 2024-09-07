@@ -14,7 +14,7 @@ export default function Login() {
 
     const submitUser = (values) => {
         login(values)
-            .then(res => navigate(`/chat/${res.user.id}`))
+            .then(res => navigate(`/chat`))
             .catch(res => {
                 if (res.status === 401) {
                     userSwal(2500, "error", "email or password is wrong.");
