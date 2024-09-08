@@ -2,6 +2,7 @@ import {useEffect, useRef, useState} from "react";
 import {getUserDetail, getUserMessage, login, sendUserMessage} from "../../api.js";
 
 export default function ChatBox() {
+    const [first, setFirst] = useState(0);
     const [messages, setMessages] = useState([]);
     const [userId, setUserId] = useState(null);
     const bottomScroll = useRef(null);
@@ -32,9 +33,28 @@ export default function ChatBox() {
         }, 2000);
     }
 
-    useEffect(() => {
+    const scrollHandler = () => {
         bottomScroll.current?.scrollIntoView({ behavior: 'smooth' });
-    }, [messages]);
+        document.getElementById("scrollBtn").classList.add("hidden");
+    }
+
+    const newMessageHandler = (e) => {
+        console.log(window.scrollY)
+        if ( e.clientY >=  document.getElementById('chat').offsetHeight-150) {
+            document.getElementById("scrollBtn").classList.add("hidden");
+        }
+    }
+
+    useEffect(() => {
+        if (first < 2)
+           return  setFirst(x => x + 1);
+
+        if (userId !== messages.at(-1).userId) {
+            document.getElementById("scrollBtn").classList.remove("hidden");
+        } else {
+            bottomScroll.current?.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [messages.length]);
 
     useEffect(() => {
         const timer = refreshMessage();
@@ -47,10 +67,11 @@ export default function ChatBox() {
     }, []);
 
     return (
-        <div className="basis-4/5 flex flex-col gap-4">
+        <div className="relative basis-4/5 flex flex-col gap-4">
+            <button className="hidden absolute bottom-20 right-10 bg-light-primary p-2 text-white rounded opacity-75" onClick={(e) => scrollHandler(e)} id='scrollBtn'>new message</button>
             {messages.length === 0 ? <div className="h-[42rem] w-auto bg-gray-50 rounded-xl flex items-center justify-center">
                 <p>There isn't any message</p>
-            </div> : <div className="h-[42rem] p-3 bg-gray-50 rounded-xl flex flex-col items-stretch overflow-auto ltr">{
+            </div> : <div className="h-[42rem] p-3 bg-gray-50 rounded-xl flex flex-col items-stretch overflow-auto ltr" id="chat" onMouseMove={newMessageHandler}>{
                 messages.map((user, index) =>
                     user.userId !== userId ?
                         <p className="bg-gray-500 p-1 px-5 text-white rounded w-fit self-start mb-2" key={index}>{user.text}</p>

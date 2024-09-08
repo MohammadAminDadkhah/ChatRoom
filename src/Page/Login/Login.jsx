@@ -28,7 +28,7 @@ export default function Login() {
             <img src="./Login.jpg" alt="LoginImage" className="size-[50%] rounded-xl basis-1/2"/>
             <form onSubmit={handleSubmit(submitUser)} className="flex flex-col basis-1/2 items-center justify-center gap-8">
                 <div className="flex flex-col justify-center gap-1">
-                    <label className="text-light-base-100">Username</label>
+                    <label className="text-light-base-100">email</label>
                     <input
                         {...register("email")}
                         className="border rounded-lg p-1"

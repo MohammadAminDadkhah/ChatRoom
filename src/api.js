@@ -39,7 +39,7 @@ export function login(data) {
 }
 
 export function registerUser(data) {
-    return url.post('/register', data)
+    return url.post('/register', data);
 }
 
 export function onlineUser() {
@@ -47,13 +47,17 @@ export function onlineUser() {
 }
 
 export function getUserMessage(data) {
-    return url.get('chats', data)
+    return url.get('chats', data);
 }
 
 export function sendUserMessage(data) {
-    return url.post('chats', data)
+    return url.post('chats', data);
 }
 
 export function getUserDetail() {
-    return url.get('user')
+    return url.get('user');
+}
+
+export function logout() {
+    return url.get('logout');
 }
